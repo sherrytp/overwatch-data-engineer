@@ -1,0 +1,2 @@
+{"operation": "create", "resource": {"type": "pipeline", "uuid": "cheerful_crystal"}, "timestamp": 1713116056, "user": null}
+{"operation": "create", "resource": {"type": "pipeline", "uuid": "example_pipeline_copy"}, "timestamp": 1713116149, "user": null}
