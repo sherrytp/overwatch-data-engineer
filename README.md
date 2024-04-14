@@ -17,6 +17,30 @@
 - Visualisation: [Google Data Studio](https://datastudio.google.com/)
 
 
+## Background
+
+1. 
+2. Get a QUANDL API
+3. Replace `mage-zoomcamp/data_loaders/read_api_data.py` with a simplier way is to use on a sample data: 
+```
+quandl.ApiConfig.api_key = 'yourquandlapi'
+quandl.get_table('SHARADAR/DAILY', paginate=False)
+```
+4. `paginate` setting to False means the API calls will limit to 10,000 rows of data, but you should have enough sample data to understand the rest steps of the project. 
+5. Attribute Definations Breakdown for QUANDL API. 
+
+#### file 
+    - **link​** ­ The string URL where the file can be downloaded, or null, if it is not present 
+    - **status**​ The string status of the requested file; the possible values are: 
+        - **Fresh** ­ the file is available and up to date 
+        - **Creating** ­ the file is not available but it is bein created 
+        - **Regenerating** ­ the file is available but it is out of date and a new one is being created 
+    - **data_snapshot_time​** ­ the DateTime when the file creation process was initiated 
+#### datatable
+    - **last_refreshed_time​** ­ The DateTime when the table was last updated 
+    > The generated ​link is only valid for 30 minutes. If your link expires, repeat your API call to generate a new ​download link. 
+
+
 ## Steps
 
 ### Create a Google Cloud Project
