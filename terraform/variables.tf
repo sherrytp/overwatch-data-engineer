@@ -1,14 +1,14 @@
 variable "credentials" {
   description = "My Credentials"
-  default     = "<Path to your Service Account json file>"
+  default     = "/home/sherrytp/streaming-r-stocks/terraform/radiant-arcanum-413707-d6bbe40a27e3.json"
   #ex: if you have a directory where this file is called keys with your service account json file
   #saved there as my-creds.json you could use default = "./keys/my-creds.json"
 }
 
 
 variable "project" {
-  description = "Project"
-  default     = "<Your Project ID>"
+  description = "project-stocks"
+  default     = "radiant-arcanum-413707"
 }
 
 variable "region" {
