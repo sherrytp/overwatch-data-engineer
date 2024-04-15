@@ -1,6 +1,5 @@
 import io
 import os
-import pandas as pd
 import requests
 from pandas import DataFrame
 from dotenv import load_dotenv
@@ -19,8 +18,20 @@ def load_data_from_api(**kwargs) -> DataFrame:
     """
     Template for loading data from API
     """
+
+    # Add logging
+    kwarg_logger = kwargs.get('logger')
+
+    kwarg_logger.info('Test logger info')
+    kwarg_logger.warning('Test logger warning')
+    kwarg_logger.error('Test logger error')
+
+    # Config API to your own Nasdaq QUANDL account
     nasdaqdatalink.ApiConfig.api_key = os.getenv('QUANDL_API')
-    df = nasdaqdatalink.get_table('SHARADAR/SFP', paginate=False)
+    df = nasdaqdatalink.get_table('SHARADAR/TICKERS', paginate=False)
+
+    print(df.isnull().sum())
+    
     return df
 
 

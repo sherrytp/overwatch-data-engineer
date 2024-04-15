@@ -1,3 +1,5 @@
+import pandas as pd
+
 from mage_ai.io.file import FileIO
 if 'data_loader' not in globals():
     from mage_ai.data_preparation.decorators import data_loader
@@ -16,9 +18,10 @@ def load_data_from_file(*args, **kwargs):
 
     Docs: https://docs.mage.ai/design/data-loading#fileio
     """
-    filepath = 'path/to/your/file.csv'
+    filepath = '/home/sherrytp/streaming-r-stocks/mage-zoomcamp/magic-zoomcamp/scratchpads/SHARADAR_DAILY.csv'
 
-    return FileIO().load(filepath)
+    df = pd.read_csv(filepath)
+    return df
 
 
 @test

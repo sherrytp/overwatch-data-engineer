@@ -53,3 +53,11 @@ notification_config:
     webhook_url: "{{ env_var('MAGE_TEAMS_WEBHOOK_URL') }}"
 project_uuid: 5f338b76003f4805903e5e27401de0c5
 help_improve_mage: true
+
+logging_config:
+  type: gcs
+  level: INFO
+  destination_config:
+    path_to_credentials: "/home/sherrytp/streaming-r-stocks/.resource/radiant-arcanum-413707-d6bbe40a27e3.json"
+    bucket: "zoomcamp-stock-data"
+    prefix: "mage-logs"

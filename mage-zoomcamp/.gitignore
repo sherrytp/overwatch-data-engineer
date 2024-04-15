@@ -1,4 +1,10 @@
 # Byte-compiled / optimized / DLL files
+.file_versions
+.gitkeep
+.logs/
+.mage_temp_profiles
+.preferences.yaml
+.variables/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -167,8 +173,8 @@ node_modules
 
 # Scratch files
 scratch*
+mage-ai.db
 # /mage_data*
 *secrets*.json
-# magic-zoomcamp
 *.json
 
