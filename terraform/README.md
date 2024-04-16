@@ -35,7 +35,7 @@ The infrastructure we will need consists of a Cloud Storage Bucket `google_stora
     variable "region" {
     description = "Region"
     #Update the below to your desired region
-    default     = "us-central1"
+    default     = "<your-closet-region>"
     }
 
     variable "location" {
@@ -63,7 +63,7 @@ The infrastructure we will need consists of a Cloud Storage Bucket `google_stora
     ```
 6. Execute and create the environment using the following commands. 
 
-If everything goes right, you now have a bucket on Google Cloud Storage called 'datalake_<your_project>' and a dataset on BigQuery called 'stocks_data'.
+If everything goes right, you now have a bucket on Google Cloud Storage called 'datalake_<your_project>' and a dataset on BigQuery called 'owl_data'.
 
 ## Execution steps
 1. `terraform init`:

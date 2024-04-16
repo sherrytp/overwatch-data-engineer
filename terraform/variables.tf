@@ -14,7 +14,7 @@ variable "project" {
 variable "region" {
   description = "Region"
   #Update the below to your desired region
-  default     = "us-central1"
+  default     = "us-west1"
 }
 
 variable "location" {
