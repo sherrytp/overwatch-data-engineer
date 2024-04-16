@@ -20,7 +20,7 @@ services:
       - 6789:6789
     volumes:
       - .:/home/src/
-      - ~/Documents/secrets/personal-gcp.json:/home/src/personal-gcp.json
+      - ./radiant-arcanum-413707-d6bbe40a27e3.json:/home/src/radiant-arcanum-413707-d6bbe40a27e3.json
     restart: on-failure:5
   postgres:
     image: postgres:14
@@ -33,4 +33,4 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${POSTGRES_PORT}:5431"
+      - "${POSTGRES_PORT}:5432"

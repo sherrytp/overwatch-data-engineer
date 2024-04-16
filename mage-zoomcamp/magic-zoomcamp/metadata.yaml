@@ -58,6 +58,8 @@ logging_config:
   type: gcs
   level: INFO
   destination_config:
-    path_to_credentials: "/home/sherrytp/streaming-r-stocks/.resource/radiant-arcanum-413707-d6bbe40a27e3.json"
-    bucket: "zoomcamp-stock-data"
+    path_to_credentials: "../.venv/radiant-arcanum-413707-d6bbe40a27e3.json"
+    bucket: "owl-match-stats"
     prefix: "mage-logs"
+features:
+  command_center: true

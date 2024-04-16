@@ -1,9 +1,29 @@
 # https://docs.getdbt.com/docs/core/connect-data-platform/profiles.yml
 
 base:
-  outputs:
-
-    dev:
-      type: duckdb
 
   target: dev
+  outputs:  
+
+    dev:
+      type: bigquery
+      location: US
+      method: service-account-json
+      project: project-stocks
+      dataset: dev-owl-data
+      threads: 4
+      timeout_seconds: 300
+      keyfile: "/home/src/radiant-arcanum-413707-d6bbe40a27e3.json"
+
+  target: prod
+  outputs: 
+
+    prod: 
+      type: bigquery
+      location: US
+      method: service-account-json
+      project: project-stocks
+      dataset: prod-owl-data
+      threads: 4
+      timeout_seconds: 300
+      keyfile: "/home/src/radiant-arcanum-413707-d6bbe40a27e3.json"

@@ -1,4 +1,0 @@
-{"operation": "create", "resource": {"type": "pipeline", "uuid": "golden_magic"}, "timestamp": 1713144319, "user": null}
-{"operation": "create", "resource": {"type": "pipeline", "uuid": "sorcerous_star"}, "timestamp": 1713144367, "user": null}
-{"operation": "create", "resource": {"type": "pipeline", "uuid": "broken_ronin"}, "timestamp": 1713144374, "user": null}
-{"operation": "create", "resource": {"type": "pipeline", "uuid": "spectacular_wind"}, "timestamp": 1713144425, "user": null}

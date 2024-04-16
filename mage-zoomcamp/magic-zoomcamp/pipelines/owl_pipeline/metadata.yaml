@@ -3,86 +3,108 @@ blocks:
   color: null
   configuration:
     file_source:
-      path: data_loaders/read_api_data.py
-  downstream_blocks:
-  - stocks_dt
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: read_api_data
-  retry_config: null
-  status: executed
-  timeout: null
-  type: data_loader
-  upstream_blocks: []
-  uuid: read_api_data
-- all_upstream_blocks_executed: true
-  color: null
-  configuration:
-    file_source:
-      path: transformers/stocks_dt.py
-  downstream_blocks:
-  - stocks_etl
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: stocks_dt
-  retry_config: null
-  status: executed
-  timeout: null
-  type: transformer
-  upstream_blocks:
-  - read_api_data
-  uuid: stocks_dt
-- all_upstream_blocks_executed: true
-  color: null
-  configuration: {}
-  downstream_blocks:
-  - stocks_to_gcp_parquet
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: stocks_etl
-  retry_config: null
-  status: executed
-  timeout: null
-  type: transformer
-  upstream_blocks:
-  - stocks_dt
-  uuid: stocks_etl
-- all_upstream_blocks_executed: true
-  color: null
-  configuration:
-    file_source:
-      path: data_exporters/stocks_to_gcp_parquet.py
+      path: data_loaders/load_local.py
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: stocks_to_gcp_parquet
+  name: load_local
+  retry_config: null
+  status: updated
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_local
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - owl_etl
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: load_from_gcp
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_from_gcp
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - write_to_bigquery
+  - write_to_gcp_partition
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: owl_etl
+  retry_config: null
+  status: updated
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - load_from_gcp
+  uuid: owl_etl
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    data_provider: bigquery
+    data_provider_profile: default
+    data_provider_schema: owl_data
+    data_provider_table: match_stats
+    dbt: {}
+    disable_query_preprocessing: false
+    export_write_policy: append
+    limit: 1000
+    use_raw_sql: false
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: write_to_bigquery
+  retry_config: null
+  status: executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - owl_etl
+  uuid: write_to_bigquery
+- all_upstream_blocks_executed: false
+  color: null
+  configuration:
+    file_source:
+      path: data_exporters/write_to_gcp_partition.py
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: write_to_gcp_partition
   retry_config: null
   status: updated
   timeout: null
   type: data_exporter
   upstream_blocks:
-  - stocks_etl
-  uuid: stocks_to_gcp_parquet
+  - owl_etl
+  uuid: write_to_gcp_partition
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2024-04-15 01:27:04.838460+00:00'
+created_at: '2024-04-15 16:16:26.649913+00:00'
 data_integration: null
 description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: stocks_data
+name: owl_pipeline
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -92,6 +114,6 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: stocks_data
+uuid: owl_pipeline
 variables_dir: /home/src/mage_data/magic-zoomcamp
 widgets: []

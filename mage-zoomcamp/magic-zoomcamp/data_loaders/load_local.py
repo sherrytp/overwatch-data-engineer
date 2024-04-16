@@ -18,7 +18,7 @@ def load_data_from_file(*args, **kwargs):
 
     Docs: https://docs.mage.ai/design/data-loading#fileio
     """
-    filepath = '/home/sherrytp/streaming-r-stocks/mage-zoomcamp/magic-zoomcamp/scratchpads/SHARADAR_DAILY.csv'
+    filepath = '../scratchpads/match_map_stats.csv'
 
     df = pd.read_csv(filepath)
     return df
