@@ -44,7 +44,7 @@ This is a quick guide on how to setup dbt with BigQuery on Docker.
         dataset: <bigquery-dataset>
         fixed_retries: 1
         keyfile: /.google/credentials/google_credentials.json
-        location: EU
+        location: US
         method: service-account
         priority: interactive
         project: <gcp-project-id>

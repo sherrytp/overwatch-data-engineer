@@ -61,8 +61,8 @@ x-airflow-common:
     # defined GCP
     GCP_PROJECT_ID: 'project-stocks'
     GCP_GCS_BUCKET: 'owl-match-stats'
-    GOOGLE_APPLICATION_CREDENTIALS: '/./radiant-arcanum-413707-d6bbe40a27e3.json'
-    AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: 'google-cloud-platform://?extra__google_cloud_platform__key_path=/./radiant-arcanum-413707-d6bbe40a27e3.json'
+    GOOGLE_APPLICATION_CREDENTIALS: '/.google/credentials/google_credentials.json'
+    AIRFLOW_CONN_GOOGLE_CLOUD_DEFAULT: 'google-cloud-platform://?extra__google_cloud_platform__key_path=/./google_credentials.json'
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs

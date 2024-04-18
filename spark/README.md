@@ -1,4 +1,4 @@
-# Set up Spark
+# Set up Spark in the Cloud
 
 ## Installing Java
 
@@ -173,4 +173,11 @@ Before you install the gcloud CLI, make sure that your operating system meets th
 
 
 ## Conecting Spark to Google Cloud Storage
+
+- Download the jar for connecting to GCS to any location (e.g. the `lib` folder):
+
+```bash
+gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar gcs-connector-hadoop3-2.2.5.jar
+```
+
 

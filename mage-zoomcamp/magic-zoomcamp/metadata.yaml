@@ -58,7 +58,7 @@ logging_config:
   type: gcs
   level: INFO
   destination_config:
-    path_to_credentials: "../.venv/radiant-arcanum-413707-d6bbe40a27e3.json"
+    path_to_credentials: "/.google/credentials/google_credentials.json"
     bucket: "owl-match-stats"
     prefix: "mage-logs"
 features:

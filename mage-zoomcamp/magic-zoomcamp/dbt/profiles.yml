@@ -13,7 +13,7 @@ base:
       dataset: dev-owl-data
       threads: 4
       timeout_seconds: 300
-      keyfile: "/home/src/radiant-arcanum-413707-d6bbe40a27e3.json"
+      keyfile: "/home/src/google_credentials.json"
 
   target: prod
   outputs: 
@@ -26,4 +26,4 @@ base:
       dataset: prod-owl-data
       threads: 4
       timeout_seconds: 300
-      keyfile: "/home/src/radiant-arcanum-413707-d6bbe40a27e3.json"
+      keyfile: "/home/src/google_credentials.json"
