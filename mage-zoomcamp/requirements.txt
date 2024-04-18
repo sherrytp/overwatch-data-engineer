@@ -3,3 +3,4 @@ python-dotenv
 matplotlib
 plotly
 nasdaq-data-link
+pyspark

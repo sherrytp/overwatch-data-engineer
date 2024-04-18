@@ -44,13 +44,13 @@ blocks:
   language: python
   name: owl_etl
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: transformer
   upstream_blocks:
   - load_from_gcp
   uuid: owl_etl
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration:
     data_provider: bigquery
@@ -75,7 +75,7 @@ blocks:
   upstream_blocks:
   - owl_etl
   uuid: write_to_bigquery
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration:
     file_source:
@@ -87,7 +87,7 @@ blocks:
   language: python
   name: write_to_gcp_partition
   retry_config: null
-  status: updated
+  status: failed
   timeout: null
   type: data_exporter
   upstream_blocks:
