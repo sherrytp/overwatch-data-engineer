@@ -41,6 +41,7 @@ The project is designed with a stream data pipeline and expected to batch proces
 ## Getting Started 
 
 ### Prerequisites
+
 I created this project in WSL 2 (Windows Subsystem for Linux) on Windows 10. 
 To get a local copy up and running in the same environment, you'll need to:
 
@@ -79,32 +80,40 @@ To get a local copy up and running in the same environment, you'll need to:
 4. Initialize Terraform: `terraform init`
 5. Plan the infrastructure: `terraform plan`
 6. Apply the changes: `terraform apply`
+7. Refer to the details [notes]('/terraform/README.md') if you are not fully familiar with terraform setup. 
 
 If everything goes right, you now have a bucket on Google Cloud Storage called '<your_project>' and a dataset on BigQuery called ''.
 
 ### Port Mage to Run the Scheduled Pipeline
 
-1. I already clone the Mage-zoomcamp folder to the repo, so go to the [`mage-zoomcamp`]() folder: `cd mage-zoomcamp`
+1. I already clone the Mage-zoomcamp folder to the repo, so go to the [`mage-zoomcamp`]('/mage-zoomcamp/') folder: `cd mage-zoomcamp`
 2. Change name of the `dev.env` file to `.env` to set up the environment
 3. Change the `GOOGLE_PROJECT_ID` and other project_ID and database buckets to your setup
 4. Run `docker-compose build`
 5. Run `docker-compose up` and agree to the updates
 6. Go to port `http://localhost:6789/` and run the scheduled mage pipeline `owl_pipeline`. 
-7. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. 
+7. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. Run `docker-compose down` to end. 
 
 
 ### Airflow Optional
 
+Use the dockerized files `docker-compose up` to set up Airflow Orchestration to replace Mage. #WIP
+
 ### dbt Optional
-optional to keep local files with docker
+
+Refer to the [instructions]('/dbt_docker/README.md') to set up dbt with BigQuery on Docker. The transformation can also be done within Mage or Spark. I include the PydSpark transformation scripts below. 
+
 
 ### Spark ETL Jobs
 
-Follow along the [Spark]() notes if you are not fully sure about running PySpark on the Google Cloud Storage. You need to configure a few environment variables before successfully running. 
+Follow along the [Spark]('/spark/README.md') notes if you are not fully sure about running PySpark on the Google Cloud Storage. You need to configure a few environment variables before successfully running. 
 
 1. Follow the script `spark_sql.py` to oad the data stored in GCS bucket and BigQuery into a PySpark dataframe. 
 2. Transform and clean the data using PySpark functions and write it to BigQuery. 
 3. Create a DataProc cluster named `owl-analysis-cluster` with the same location to GCS region, and use the `spark_local.py` script to submit jobs. 
+
+![dataproc](Dataproc.png)
+![GCS](GCSbucket.png)
 
 ### Dashboard 
 
