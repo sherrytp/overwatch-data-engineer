@@ -47,7 +47,6 @@ rm openjdk-11.0.2_linux-x64_bin.tar.gz
 
 ## Installing Spark
 
-
 Download Spark. Use 3.3.2 version:
 
 ```bash
@@ -99,7 +98,6 @@ export HADOOP_HOME="/c/tools/hadoop-3.2.0"
 export PATH="${HADOOP_HOME}/bin:${PATH}"
 ```
 
-
 ## Testing Spark
 
 Execute `spark-shell` and run the following:
@@ -139,13 +137,13 @@ I used official guide from [Google gsutil](https://cloud.google.com/storage/docs
 
 Before you install the gcloud CLI, make sure that your operating system meets the following requirements:
 
-- It is an Ubuntu release that hasn't reached end-of-life or a Debian stable release that hasn't reached end-of-life. 
+* It is an Ubuntu release that hasn't reached end-of-life or a Debian stable release that hasn't reached end-of-life. 
 
-- It has recently updated its packages:
+* It has recently updated its packages:
 
     `sudo apt-get update`
 
-- It has `apt-transport-https` and `curl` installed
+* It has `apt-transport-https` and `curl` installed
 
 #### Installation
 
@@ -154,7 +152,7 @@ Before you install the gcloud CLI, make sure that your operating system meets th
     ```
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
     ```
-2. curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg
+2. Update and echo the key. 
     ```
     echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
     ```
@@ -174,10 +172,107 @@ Before you install the gcloud CLI, make sure that your operating system meets th
 
 ## Conecting Spark to Google Cloud Storage
 
-- Download the jar for connecting to GCS to any location (e.g. the `lib` folder):
+* Download the jar for connecting to GCS to any location (e.g. the `lib` folder):
 
 ```bash
-gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar gcs-connector-hadoop3-2.2.5.jar
+gsutil cp gs://hadoop-lib/gcs/gcs-connector-hadoop3-2.2.5.jar lib/gcs-connector-hadoop3-2.2.5.jar
+```
+* Uploading data to GCS. 
+```bash
+cd data/
+gsutil -m cp -r pq/ gs://<bucket-name>/pq
 ```
 
+* The option ```-m``` makes that all cpus are used
+	* Make sure to authenticate gcloud via cli first:
+		* ```export GOOGLE_APPLICATION_CREDENTIALS=<service-account-key>.json```
+		* ```gcloud auth activate-service-account --key-file $GOOGLE_APPLICATION_CREDENTIALS```
 
+
+--------
+- if I can download data from GCS directly, and work with spark. 
+- partition to separte files, use `tree data` to check the structure of the data folder. 
+- write a schema like `05_taxi_schema`
+- !!!! Important:
+
+
+
+## Setting up a Dataproc Cluster
+
+* Create a cluster in Google cloud
+* Dataproc is a service from Google cloud
+* Go to Goole cloud console and sear for "Dataproc"
+* When you run it for the first time, make sure the DataProc API is enabled in your account
+* Then click on "CREATE CLUSTER"
+	* Cluster Name: `owl-analysis-bucket`
+	* Choose a region (same as the bucket has): us-west1	
+	* Choose a cluster type. Ususally you would choose "standard": 1 master, multiple workers, for our case single node is enough
+	* Choose optional components: "Jupyter-Notebook", "Docker"
+	* "CREATE" the cluster, creating a new VM
+	* Go to the cluster and click on it, there you find a buttom "SUBMIT JOB"
+	* Click on it, choose "Job type": PySpark
+	* Next, the main python file has to be selected, for that our script needs to be uploaded. We can use the already created bucket for that, so don't configure the spark job as we did locally. 
+	* In the terminal go to the folder where the script is stored and copy the pyspark job script to the bucket:  
+	```gsutil cp <filename> gs://<bucket-name>/<location>/<filename>``` 
+	
+		(```gsutil cp spark_local_spark_cluster.py gs://de-spark-frauke/code/spark_local_spark_cluster.py```)
+
+	* Then choose as "Main python script": 
+	```
+	gs://<bucket-name>/<location>/<filename>
+	```
+	* We have to specify `Arguments` using the data bucket instead of `data`, and just copy as separate lines: 
+	```bash
+	--input_green=gs://<bucket-name>/pq/green/2020/*
+	--input_yellow=gs://<bucket-name>/<parquet-data-folder>/*
+	--output=gs://<bucket-name>/report-2020
+	```
+	* Click "SUBMIT" job
+
+	* we can also use the Google Cloud SDK or the REST API from documentation: https://cloud.google.com/dataproc/docs/guides/submit-job#dataproc-submit-job-gcloud
+	* Add `Dataproc Adminitrator` to the service account for running permission before running this: 
+	```
+	gcloud dataproc jobs submit pyspark \
+	--cluster=<custername> \
+	--region=us-west1 \
+	--jars=gs://spark-lib/bigqueryspark-bigquery-latest_2.12.jar \ 
+	gs://<bucket-name>/<location>/<filename> \
+	-- \
+	--input_=gs://<bucket-name>/pq/green/2020/* \
+    --input_yellow=gs://<bucket-name>/pq/yellow/2020/* \
+    --output=gs://<bucket-name>/report
+	```
+
+
+## Read Spark Locally As DataFrames
+
+* Save data to BigQuery
+	```python
+	df_result.write.format('bigquery') \ 
+		.option('table', output) \ 
+		.save()
+	```
+* Upload local files to GCS
+	```python
+	client = storage.Client("<client_name>")
+	bucket_name = "owl-match-stats"
+	bucket = client.get_bucket(bucket_name)
+	blob = bucket.blob("owl_match.csv")
+	blob.upload_from_string(csv_string, content_type='text/csv')
+	```
+* Read csv file:
+	```
+	df = spark.read\
+		.option("header", "true") \
+		.parquet('fhvhv_tripdata_2021-01.csv')
+	```
+	* Spark doesn't try to infer types, but reads everything as strings
+	* Save the first 100 rows: ```head -n 101 fhvhv_tripdata_2021-01.csv > head.csv``` and read this file with pandas to check the types. Here also the timetamps are read as integers, the rest id ok
+	* use ```spark.createDataFrame(df_pandas).show()``` to convert a pandas dataframe to a spark dataframe, then types are not all strings any more
+	* Use the output of ```spark.createDataFrame(df_pandas).schema``` to define the types
+	* use this schema to read the data in spark
+* Now save data to parquet
+* We now have one big file, this is not good in spark, so we will break it into multiple files - which are called **partitions** in spark
+* ```df.repartition(24)```: This is a lazy command, it is only applied, when we actually do something
+* ```df.write.parquet('fhvhv/2021/01')``` (this takes a while)  
+* Read the created parquet files: ```spark.read.parquet("fhvhv/2021/01")```
