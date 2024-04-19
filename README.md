@@ -6,24 +6,53 @@ Overwatch is a first-person shooter team game with with a wide variety of heroes
 
 The datasets, originally provided by IBM Watson, include players, head-to-head match-ups, and maps. The player historical statistics should contain OWL games from 2018 till now. It's centered around each player, and player's picked hero, its team name, performance, match IDs, etc.
 
+## Table of Contents
 
-## Pre-requisites
+- [Background]()
+- [Problem Statement]()
+- [Data Architecture]()
+- [Getting Started]()
+- [Prerequisites]()
+- [Steps]
+- [Dashboard]()
+- [Future Work]()
+- [Acknowledgements]()
+
+## Problem Statement
+
+## Data Architecture
+
+The project is designed with a stream data pipeline and expected to batch processing the OWL match data weekly. A few technologies used:
+
+- **Cloud**: Google Cloud Platform (GCP)
+    - **Data Lake**: [Google Cloud Storage](https://cloud.google.com/storage)
+    - **Data Warehourse**: [Google BigQuery](https://cloud.google.com/bigquery)
+-  **Infrastructure as Code**: [Terraform](https://www.terraform.io/downloads/)
+- **Workflow Orchestration**: 
+    - [Mage](https://github.com/mage-ai/mage-zoomcamp?tab=readme-ov-file#lets-get-started)
+    - [Airflow](https://airflow.apache.org)
+- **Data Ingestiong**:  Batch Processin with [Spark](https://spark.apache.org/) on [Dataproc](https://cloud.google.com/dataproc)
+- **Transformation**: 
+    - Spark
+    - [dbt](https://github.com/dbt-labs/dbt-core/blob/main/docker/Dockerfile)
+- **Visualisation**: [Google Data Studio](https://datastudio.google.com/)
+
+
+## Getting Started 
+
+### Prerequisites
+I created this project in WSL 2 (Windows Subsystem for Linux) on Windows 10. 
+To get a local copy up and running in the same environment, you'll need to:
+
 - Install [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/install) (Windows Subsystem for Linux) on Windows
+- [Install Docker Desktop](https://docs.docker.com/desktop/windows/install/)
 - Install Python (py3.10 above used for the project)
 - Install VSCode
-- [Install Docker Desktop](https://docs.docker.com/desktop/windows/install/)
 - Have a Google Cloud Platform account
 - [Install Google Cloud SDK](https://cloud.google.com/sdk/docs/install-sdk#deb) for Ubuntu
 
--  Infrastructure as Code: [Terraform](https://www.terraform.io/downloads/)
-- Workflow Orchestration: [Mage]
-- Data Lake: [Google Cloud Storage](https://cloud.google.com/storage)
-- Data Warehouse: [Google BigQuery](https://cloud.google.com/bigquery)
-- Batch Processing: [Spark](https://spark.apache.org/) on [Dataproc](https://cloud.google.com/dataproc)
-- Visualisation: [Google Data Studio](https://datastudio.google.com/)
-
-
 ### Create a Google Cloud Project
+
 1. Go to [Google Cloud](https://console.cloud.google.com/) and create a new project. The default project id is `project-stocks`. 
 2. Go to IAM and [create a Service Account](https://cloud.google.com/docs/authentication/getting-started#creating_a_service_account) with these roles:
     - BigQuery Admin
@@ -37,6 +66,7 @@ The datasets, originally provided by IBM Watson, include players, head-to-head m
     - IAM Service Account Credentials API
     - Cloud Dataproc API
     - Compute Engine API
+    - Lookder Studio
 
 ### Set up the infrastructure with Terraform on Google Cloud Platform
 
@@ -52,31 +82,50 @@ The datasets, originally provided by IBM Watson, include players, head-to-head m
 
 If everything goes right, you now have a bucket on Google Cloud Storage called '<your_project>' and a dataset on BigQuery called ''.
 
+### Port Mage to Run the Scheduled Pipeline
+
+1. I already clone the Mage-zoomcamp folder to the repo, so go to the [`mage-zoomcamp`]() folder: `cd mage-zoomcamp`
+2. Run `docker-compose build`
+3. Run `docker-compose up` and agree to the updates
+4. Go to port `http://localhost:6789/` and run the scheduled mage pipeline `owl_pipeline`. 
+5. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. 
+
+
 ### Airflow Optional
 
-### Big Query Analytics
-
-### dbt 
+### dbt Optional
 optional to keep local files with docker
 
-### Spark ETL jobs
-### visual
-[visuals.png]
+### Spark ETL Jobs
 
-1. pie chart of maps
-2. most dmg by player
-3. max elim per game (vs total) by hero
+Follow along the [Spark]() notes if you are not fully sure about running PySpark on the Google Cloud Storage. You need to configure a few environment variables before successfully running. 
+
+1. Follow the script `spark_sql.py` to oad the data stored in GCS bucket and BigQuery into a PySpark dataframe. 
+2. Transform and clean the data using PySpark functions and write it to BigQuery. 
+3. Create a DataProc cluster named `owl-analysis-cluster` with the same location to GCS region, and use the `spark_local.py` script to submit jobs. 
+
+### Dashboard 
+
+Looker Studio is a cloud-based business intelligence and data analytics platform used for visualizing the useful insights.
+
+Link to the dashboard with Analytics: https://lookerstudio.google.com/reporting/ac7d4497-216a-4924-8755-68d058dd129e
+![viz](Visuals.png)
+
+1. Pie chart of maps being played thruought the season - distribution of categorical data
+2. Total damage by player, sorting by the most
+3. Total elimination vesus death per game by hero - distribution of data across a temporal line
 
 
-### 404 Data not found error
-* Mage - Error: "404 Not found: Dataset <dataset_name> was not found in location <your_location>
+## Roadmap for Future Development
 
-* DBT - Error: “404 Not found: Dataset <dataset_name>:<dbt_schema_name> was not found in location <your_location>” after building from stg_green_tripdata.sql
+- [ ] More unit tests on Mage
+- [ ] Automation tests
+- [ ] CI/CD
+- [ ] Machine Learning predictions on game matches
 
-In the step in this video (DE Zoomcamp 4.3.1 - Build the First dbt Models), after creating `stg_green_tripdata.sql` and clicking `build`, I encountered an error saying dataset not found in location EU. The default location for dbt Bigquery is the US, so when generating the new Bigquery schema for dbt, unless specified, the schema locates in the US. 
 
-Solution: 
-Turns out I forgot to specify Location to be `EU` when adding connection details. 
+## Contributing
 
-Develop -> Configure Cloud CLI -> Projects -> taxi_rides_ny -> (connection) Bigquery -> Edit -> Location (Optional) -> type `EU` -> Save
+Feel free to comment or contribute to this project or my dataset on Kaggle. 
 
+Much appreciation to [Data Engineering Zoomcamp by DataTalksClub](https://github.com/DataTalksClub/data-engineering-zoomcamp) for the amazing course. 

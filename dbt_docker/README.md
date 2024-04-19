@@ -54,7 +54,7 @@ This is a quick guide on how to setup dbt with BigQuery on Docker.
     target: dev
   ```
   - Name the profile. `bq-dbt-workshop` in my case. This will be used in the `dbt_project.yml` file to refer and initiate dbt.
-  - Replace with your `dataset`, `location` (my GCS bucket is in `EU` region, change to `US` if needed), `project` values.
+  - Replace with your `dataset`, `location` (you change `US` to your desired faster location), `project` values.
 - Run the following commands -
   - ```bash 
     docker compose build 
