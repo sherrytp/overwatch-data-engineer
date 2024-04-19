@@ -85,10 +85,12 @@ If everything goes right, you now have a bucket on Google Cloud Storage called '
 ### Port Mage to Run the Scheduled Pipeline
 
 1. I already clone the Mage-zoomcamp folder to the repo, so go to the [`mage-zoomcamp`]() folder: `cd mage-zoomcamp`
-2. Run `docker-compose build`
-3. Run `docker-compose up` and agree to the updates
-4. Go to port `http://localhost:6789/` and run the scheduled mage pipeline `owl_pipeline`. 
-5. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. 
+2. Change name of the `dev.env` file to `.env` to set up the environment
+3. Change the `GOOGLE_PROJECT_ID` and other project_ID and database buckets to your setup
+4. Run `docker-compose build`
+5. Run `docker-compose up` and agree to the updates
+6. Go to port `http://localhost:6789/` and run the scheduled mage pipeline `owl_pipeline`. 
+7. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. 
 
 
 ### Airflow Optional
