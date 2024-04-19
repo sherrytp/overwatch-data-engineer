@@ -8,17 +8,25 @@ The datasets, originally provided by IBM Watson, include players, head-to-head m
 
 ## Table of Contents
 
-- [Background]()
-- [Problem Statement]()
-- [Data Architecture]()
-- [Getting Started]()
-- [Prerequisites]()
-- [Steps]
-- [Dashboard]()
-- [Future Work]()
-- [Acknowledgements]()
+- [Background](#background)
+- [Problem Statement](#problem-statement)
+- [Data Architecture](#data-architecture)
+- [Getting Started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Creating GCP](#create-a-google-cloud-project)
+    - [Terraform](#set-up-the-infrastructure-with-terraform-on-google-cloud-platform)
+    - [Mage](#port-mage-to-run-the-scheduled-pipeline)
+    - [(Optional) Airflow](#optional-airflow)
+    - [(Optional) dbt](#optional-dbt)
+    - [Spark](#spark-etl-jobs)
+- [Dashboard](#dashboard)
+- [Future Work](#future-work)
+- [Contributing](#contributing)
 
 ## Problem Statement
+
+The problem about e-sports game matches is that you cannot really measure a player's skills solely by metrics and numbers. Gladly, Overwatch is a FPS game, so aim rates and reaction time matter, but not 100% as short TTK (time-to-kill) FPS games, when team cooperation, hero picking, and game mechanics come into place. Therefore, I intended to start the analysis from simple metrics of **eliminations**, **deaths**, and **damage**, but extended it into **map** analysis. More in-depth thoughts and analyses are welcomed. 
+
 
 ## Data Architecture
 
@@ -80,7 +88,7 @@ To get a local copy up and running in the same environment, you'll need to:
 4. Initialize Terraform: `terraform init`
 5. Plan the infrastructure: `terraform plan`
 6. Apply the changes: `terraform apply`
-7. Refer to the details [notes]('/terraform/README.md') if you are not fully familiar with terraform setup. 
+7. Refer to the details [notes](/terraform/README.md) if you are not fully familiar with terraform setup. 
 
 If everything goes right, you now have a bucket on Google Cloud Storage called '<your_project>' and a dataset on BigQuery called ''.
 
@@ -95,18 +103,18 @@ If everything goes right, you now have a bucket on Google Cloud Storage called '
 7. Close out mage and the port after `match_stats` and `map_stats` datasets are successfully uploaded to GCS and BigQuery. Run `docker-compose down` to end. 
 
 
-### Airflow Optional
+### (Optional) Airflow
 
 Use the dockerized files `docker-compose up` to set up Airflow Orchestration to replace Mage. #WIP
 
-### dbt Optional
+### (Optional) DBT
 
-Refer to the [instructions]('/dbt_docker/README.md') to set up dbt with BigQuery on Docker. The transformation can also be done within Mage or Spark. I include the PydSpark transformation scripts below. 
+Refer to the [instructions](/dbt_docker/README.md) to set up dbt with BigQuery on Docker. The transformation can also be done within Mage or Spark. I include the PydSpark transformation scripts below. 
 
 
 ### Spark ETL Jobs
 
-Follow along the [Spark]('/spark/README.md') notes if you are not fully sure about running PySpark on the Google Cloud Storage. You need to configure a few environment variables before successfully running. 
+Follow along the [Spark](/spark/README.md) notes if you are not fully sure about running PySpark on the Google Cloud Storage. You need to configure a few environment variables before successfully running. 
 
 1. Follow the script `spark_sql.py` to oad the data stored in GCS bucket and BigQuery into a PySpark dataframe. 
 2. Transform and clean the data using PySpark functions and write it to BigQuery. 
@@ -127,7 +135,7 @@ Link to the dashboard with Analytics: https://lookerstudio.google.com/reporting/
 3. Total elimination vesus death per game by hero - distribution of data across a temporal line
 
 
-## Roadmap for Future Development
+## Future Work
 
 - [ ] More unit tests on Mage
 - [ ] Automation tests
