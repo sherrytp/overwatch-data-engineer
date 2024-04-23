@@ -1,5 +1,7 @@
 # Overwatch League Stats
 
+**To course reviewer**: the project submission was my first commit, because I tried to enter the latest ones but only the first commit series were accepted. I tried to update the submission but didn't successfully till the deadline. Please review the most recent commit in this repo for all of the instructions; otherwise, referring to the commit on April 18 for the course fairness.
+
 ## Background
 
 Overwatch is a first-person shooter team game with with a wide variety of heroes to choose from. [Overwatch League (OWL)](https://overwatchleague.com/en-us/news/23303225) was the professional esports league of Overwatch. I really enjoyed watching the OWL games since start, and have compiled and uploaded the game match stats to my [Kaggle](https://www.kaggle.com/datasets/sherrytp/overwatch-league-stats-lab). After initially struggling with analyzing vast amounts of stock data, I eventually shifted focus to illustrating the data engineering process using smaller datasets. This approach effectively showcases the orchestration of diverse data sources.
@@ -45,6 +47,7 @@ The project is designed with a stream data pipeline and expected to batch proces
     - [dbt](https://github.com/dbt-labs/dbt-core/blob/main/docker/Dockerfile)
 - **Visualisation**: [Google Data Studio](https://datastudio.google.com/)
 
+![alt text](24bb25067c670af5f98e8baf4d78604.jpg)
 
 ## Getting Started 
 
