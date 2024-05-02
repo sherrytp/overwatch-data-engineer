@@ -1,7 +1,5 @@
 # Overwatch League Stats
 
-**To course reviewer**: the project submission was my first commit, because I tried to enter the latest ones but only the first commit series were accepted. I tried to update the submission but didn't successfully till the deadline. Please review the most recent commit in this repo for all of the instructions; otherwise, referring to the commit on April 18 for the course fairness.
-
 ## Background
 
 Overwatch is a first-person shooter team game with with a wide variety of heroes to choose from. [Overwatch League (OWL)](https://overwatchleague.com/en-us/news/23303225) was the professional esports league of Overwatch. I really enjoyed watching the OWL games since start, and have compiled and uploaded the game match stats to my [Kaggle](https://www.kaggle.com/datasets/sherrytp/overwatch-league-stats-lab). After initially struggling with analyzing vast amounts of stock data, I eventually shifted focus to illustrating the data engineering process using smaller datasets. This approach effectively showcases the orchestration of diverse data sources.
@@ -72,6 +70,9 @@ To get a local copy up and running in the same environment, you'll need to:
     - Storage Admin
     - Storage Object Admin
     - Viewer
+    > **_WARNING:_** As a proof of concept, the project creates a service account with the permission of 
+`BigQuery Admin`, `Service Account Key Admin`, `Storage Insights Collector Service`, `Storage Object Creator` and `Storage Object Viewer`, which might not be the best security practice. Any suggestions welcome on connecting GCE with Airflow in a dockerised setting in Terraform for this specific use case. 
+
 3. Download the Service Account credentials and put inside the `terraform` folder.
 4. On the Google console, enable the following APIs:
     - IAM API
@@ -140,8 +141,7 @@ Link to the dashboard with Analytics: https://lookerstudio.google.com/reporting/
 
 ## Future Work
 
-- [ ] More unit tests on Mage
-- [ ] Automation tests
+- [ ] More unit tests and automation tests on Mage
 - [ ] CI/CD
 - [ ] Machine Learning predictions on game matches
 
